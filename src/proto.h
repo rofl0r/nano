@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: proto.h 4569 2013-03-17 22:09:38Z astyanax $ */
 /**************************************************************************
  *   proto.h                                                              *
  *                                                                        *
@@ -489,6 +489,8 @@ int do_input(bool *meta_key, bool *func_key, bool *have_shortcut, bool
 int do_mouse(void);
 #endif
 void do_output(char *output, size_t output_len, bool allow_cntrls);
+void do_vi_cmd(void);
+void do_vi_i(void);
 
 /* All functions in prompt.c. */
 int do_statusbar_input(bool *meta_key, bool *func_key, bool *have_shortcut,
@@ -690,6 +692,10 @@ void do_spell(void);
 void do_wordlinechar_count(void);
 #endif
 void do_verbatim_input(void);
+/* vi functions */
+void do_vi_o(void);
+void do_vi_O(void);
+void do_vi_a(void);
 
 /* All functions in utils.c. */
 int digits(size_t n);

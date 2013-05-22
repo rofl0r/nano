@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: rcfile.c 4569 2013-03-17 22:09:38Z astyanax $ */
 /**************************************************************************
  *   rcfile.c                                                             *
  *                                                                        *
@@ -77,6 +77,7 @@ static const rcoption rcopts[] = {
     {"tabsize", 0},
     {"tempfile", TEMP_FILE},
     {"view", VIEW_MODE},
+    {"vimode", VIMODE},
 #ifndef NANO_TINY
     {"autoindent", AUTOINDENT},
     {"backup", BACKUP_FILE},

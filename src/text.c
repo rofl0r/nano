@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: text.c 4565 2013-01-20 07:51:34Z astyanax $ */
 /**************************************************************************
  *   text.c                                                               *
  *                                                                        *
@@ -744,6 +744,29 @@ void do_enter(bool undoing)
 /* Need this again... */
 void do_enter_void(void) {
     do_enter(FALSE);
+}
+
+/***********************************************
+ * vi commands with no nano equivalent
+ */
+
+/* commands leading to insert mode */
+void do_vi_o(void) {
+    do_end();
+    do_enter_void();
+    do_vi_i();
+}
+
+void do_vi_O(void) {
+    do_home();
+    do_enter_void();
+    do_up_void();
+    do_vi_i();
+}
+
+void do_vi_a(void) {
+    do_right();
+    do_vi_i();
 }
 
 #ifndef NANO_TINY
@@ -2958,7 +2981,7 @@ void do_spell(void)
     unlink(temp);
     free(temp);
 
-    currmenu = MMAIN;
+    currmenu = ISSET(VIMODE) ? MVIMODE : MMAIN;
 
     /* If the spell-checker printed any error messages onscreen, make
      * sure that they're cleared off. */

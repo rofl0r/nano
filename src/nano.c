@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: nano.c 4549 2013-01-01 03:24:39Z astyanax $ */
 /**************************************************************************
  *   nano.c                                                               *
  *                                                                        *
@@ -904,6 +904,7 @@ void usage(void)
 #ifndef DISABLE_MOUSE
     print_opt("-m", "--mouse", N_("Enable the use of the mouse"));
 #endif
+    print_opt("-n", "--vimode", N_("Enable vimode"));
 #ifndef DISABLE_OPERATINGDIR
     print_opt(_("-o <dir>"), _("--operatingdir=<dir>"),
 	N_("Set operating directory"));
@@ -1332,7 +1333,7 @@ RETSIGTYPE handle_sigwinch(int signal)
     /* Redraw the contents of the windows that need it. */
     blank_statusbar();
     wnoutrefresh(bottomwin);
-    currmenu = MMAIN;
+    currmenu = ISSET(VIMODE) ? MVIMODE : MMAIN;
     total_refresh();
 
     /* Jump back to either main() or the unjustify routine in
@@ -1414,6 +1415,20 @@ void do_toggle_void(void)
 ;
 }
 #endif /* !NANO_TINY */
+
+void do_vi_cmd(void)
+{
+    if (ISSET(VIMODE)) {
+        currmenu = MVIMODE;
+        do_left();
+        // TODO - left move won't show up?
+    }
+}
+
+void do_vi_i(void)
+{
+    currmenu = MMAIN;
+}
 
 /* Disable extended input and output processing in our terminal
  * settings. */
@@ -1562,7 +1577,8 @@ int do_input(bool *meta_key, bool *func_key, bool *s_or_t, bool
 #endif
 
     /* Check for a shortcut in the main list. */
-    s = get_shortcut(MMAIN, &input, meta_key, func_key);
+    s = get_shortcut(currmenu == MVIMODE ? MVIMODE : MMAIN,
+                     &input, meta_key, func_key);
 
     /* If we got a shortcut from the main list, or a "universal"
      * edit window shortcut, set have_shortcut to TRUE. */
@@ -1571,7 +1587,7 @@ int do_input(bool *meta_key, bool *func_key, bool *s_or_t, bool
     /* If we got a non-high-bit control key, a meta key sequence, or a
      * function key, and it's not a shortcut or toggle, throw it out. */
     if (!have_shortcut) {
-	if (is_ascii_cntrl_char(input) || *meta_key || *func_key) {
+	if (currmenu == MVIMODE || is_ascii_cntrl_char(input) || *meta_key || *func_key) {
 	    statusbar(_("Unknown Command"));
 	    beep();
 	    *meta_key = FALSE;
@@ -2084,6 +2100,7 @@ int main(int argc, char **argv)
 #ifndef DISABLE_MOUSE
 	{"mouse", 0, NULL, 'm'},
 #endif
+	{"vimode", 0, NULL, 'n'},
 #ifndef DISABLE_OPERATINGDIR
 	{"operatingdir", 1, NULL, 'o'},
 #endif
@@ -2156,7 +2173,7 @@ int main(int argc, char **argv)
     while ((optchr =
 #ifdef HAVE_GETOPT_LONG
 	getopt_long(argc, argv,
-		"h?ABC:DEFGHIKLNOPQ:RST:UVWY:abcdefgijklmo:pqr:s:tuvwxz$",
+		"h?ABC:DEFGHIKLNOPQ:RST:UVWY:abcdefgijklmno:pqr:s:tuvwxz$",
 		long_options, NULL)
 #else
 	getopt(argc, argv,
@@ -2288,6 +2305,9 @@ int main(int argc, char **argv)
 		SET(USE_MOUSE);
 		break;
 #endif
+	    case 'n':
+		SET(VIMODE);
+		break;
 #ifndef DISABLE_OPERATINGDIR
 	    case 'o':
 		operating_dir = mallocstrcpy(operating_dir, optarg);
@@ -2735,7 +2755,9 @@ int main(int argc, char **argv)
 	if (ISSET(CONST_UPDATE) && get_key_buffer_len() == 0)
 	    do_cursorpos(TRUE);
 
-        currmenu = MMAIN;
+        if (currmenu != MMAIN && currmenu != VIMODE) {
+            currmenu = ISSET(VIMODE) ? MVIMODE : MMAIN;
+        }
 
 	/* Read in and interpret characters. */
 	do_input(&meta_key, &func_key, &s_or_t, &ran_func, &finished,

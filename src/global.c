@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: global.c 4556 2013-01-03 04:36:39Z astyanax $ */
 /**************************************************************************
  *   global.c                                                             *
  *                                                                        *
@@ -1078,7 +1078,7 @@ void shortcut_init(bool unjustify)
 	goto_dir_msg, IFSCHELP(nano_gotodir_msg), FALSE, VIEW);
 #endif
 
-    currmenu = MMAIN;
+    currmenu = ISSET(VIMODE) ? MVIMODE : MMAIN;
 
     add_to_sclist(MMAIN|MWHEREIS|MREPLACE|MREPLACE2|MGOTOLINE|MWRITEFILE|MINSERTFILE|MEXTCMD|MSPELL|MBROWSER|MWHEREISFILE|MGOTODIR,
 	"^G", do_help_void, 0, TRUE);
@@ -1261,6 +1261,36 @@ void shortcut_init(bool unjustify)
     add_to_sclist(MALL, "^H", do_backspace, 0, TRUE);
     add_to_sclist(MALL, "kbsp", do_backspace, 0, TRUE);
 
+    add_to_sclist(MVIMODE, "l", do_right, 0, TRUE);
+    add_to_sclist(MVIMODE, "h", do_left, 0, TRUE);
+    add_to_sclist(MVIMODE, "w", do_next_word_void, 0, TRUE);
+    add_to_sclist(MVIMODE, "b", do_prev_word_void, 0, TRUE);
+    add_to_sclist(MVIMODE, "k", do_up_void, 0, TRUE);
+    add_to_sclist(MVIMODE, "j", do_down_void, 0, TRUE);
+    add_to_sclist(MVIMODE, "i", do_vi_i, 0, TRUE);
+    add_to_sclist(MVIMODE, "a", do_vi_a, 0, TRUE);
+    add_to_sclist(MVIMODE, "o", do_vi_o, 0, TRUE);
+    add_to_sclist(MVIMODE, "O", do_vi_O, 0, TRUE);
+    add_to_sclist(MVIMODE, ">", do_indent_void, 0, TRUE);
+    add_to_sclist(MVIMODE, "<", do_unindent, 0, TRUE);
+    add_to_sclist(MVIMODE, "/", do_search, 0, TRUE);
+    add_to_sclist(MVIMODE, "v", do_mark, 0, TRUE);
+    add_to_sclist(MVIMODE, "Z", do_exit, 0, TRUE);
+    add_to_sclist(MVIMODE, "d", do_cut_text_void, 0, TRUE);
+    add_to_sclist(MVIMODE, "p", do_uncut_text, 0, TRUE);
+    add_to_sclist(MVIMODE, "y", do_copy_text, 0, TRUE);
+    add_to_sclist(MVIMODE, "0", do_home, 0, TRUE);
+    add_to_sclist(MVIMODE, "$", do_end, 0, TRUE);
+    add_to_sclist(MVIMODE, "%", do_find_bracket, 0, TRUE);
+    add_to_sclist(MVIMODE, "^F", do_page_down, 0, TRUE);
+    add_to_sclist(MVIMODE, "^B", do_page_up, 0, TRUE);
+    add_to_sclist(MVIMODE, "?", do_replace, 0, TRUE);
+    add_to_sclist(MVIMODE, "u", do_undo, 0, TRUE);
+    add_to_sclist(MVIMODE, "^R", do_redo, 0, TRUE);
+    add_to_sclist(MVIMODE, "x", do_delete, 0, TRUE);
+
+    add_to_sclist(MMAIN, "\033", do_vi_cmd, 0, TRUE);
+
 #ifdef DEBUG
     print_sclist();
 #endif
@@ -1299,6 +1329,8 @@ const char *flagtostr(int flag)
             return N_("Help mode");
         case CONST_UPDATE:
             return N_("Constant cursor position display");
+        case VIMODE:
+            return N_("Use vi command mode emulation");
         case MORE_SPACE:
             return N_("Use of one more line for editing");
         case SMOOTH_SCROLL:
@@ -1445,6 +1477,10 @@ sc *strtosc(int menu, char *input)
 	s->scfunc =  do_toggle_void;
 	s->execute = FALSE;
 	s->toggle = MORE_SPACE;
+    } else if (!strcasecmp(input, "vimode")) {
+	s->scfunc =  do_toggle_void;
+	s->execute = FALSE;
+	s->toggle = VIMODE;
     } else if (!strcasecmp(input, "smoothscroll")) {
 	s->scfunc =  do_toggle_void;
 	s->execute = FALSE;

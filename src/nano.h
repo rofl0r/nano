@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: nano.h 4569 2013-03-17 22:09:38Z astyanax $ */
 /**************************************************************************
  *   nano.h                                                               *
  *                                                                        *
@@ -512,7 +512,8 @@ enum
     UNDOABLE,
     SOFTWRAP,
     POS_HISTORY,
-    LOCKING
+    LOCKING,
+    VIMODE
 };
 
 /* Flags for which menus in which a given function should be present */
@@ -530,6 +531,7 @@ enum
 #define	MWHEREISFILE			(1<<11)
 #define MGOTODIR			(1<<12)
 #define MYESNO				(1<<13)
+#define MVIMODE              (1<<14)
 /* This really isnt all but close enough */
 #define	MALL				(MMAIN|MWHEREIS|MREPLACE|MREPLACE2|MGOTOLINE|MWRITEFILE|MINSERTFILE|MEXTCMD|MSPELL|MBROWSER|MWHEREISFILE|MGOTODIR|MHELP)
 

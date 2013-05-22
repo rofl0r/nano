@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: winio.c 4569 2013-03-17 22:09:38Z astyanax $ */
 /**************************************************************************
  *   winio.c                                                              *
  *                                                                        *
@@ -345,6 +345,10 @@ int parse_kbinput(WINDOW *win, bool *meta_key, bool *func_key)
 	case ERR:
 	    break;
 	case NANO_CONTROL_3:
+        if (ISSET(VIMODE) && currmenu == MMAIN) {
+		    retval = *kbinput;
+		    break;
+        }
 	    /* Increment the escape counter. */
 	    escapes++;
 	    switch (escapes) {
