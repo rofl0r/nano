@@ -531,9 +531,12 @@ enum
 #define	MWHEREISFILE			(1<<11)
 #define MGOTODIR			(1<<12)
 #define MYESNO				(1<<13)
-#define MVIMODE              (1<<14)
+#define MVICMD              (1<<14)
+#define MVIINS              (1<<15)
+#define MVIMODE             (MVICMD|MVIINS)
+#define MEDITING            (MMAIN|MVICMD|MVIINS)
 /* This really isnt all but close enough */
-#define	MALL				(MMAIN|MWHEREIS|MREPLACE|MREPLACE2|MGOTOLINE|MWRITEFILE|MINSERTFILE|MEXTCMD|MSPELL|MBROWSER|MWHEREISFILE|MGOTODIR|MHELP)
+#define	MALL				(MMAIN|MWHEREIS|MREPLACE|MREPLACE2|MGOTOLINE|MWRITEFILE|MINSERTFILE|MEXTCMD|MSPELL|MBROWSER|MWHEREISFILE|MGOTODIR|MHELP|MVIINS)
 
 /* Control key sequences.  Changing these would be very, very bad. */
 #define NANO_CONTROL_SPACE 0

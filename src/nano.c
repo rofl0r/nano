@@ -1333,7 +1333,7 @@ RETSIGTYPE handle_sigwinch(int signal)
     /* Redraw the contents of the windows that need it. */
     blank_statusbar();
     wnoutrefresh(bottomwin);
-    currmenu = ISSET(VIMODE) ? MVIMODE : MMAIN;
+    currmenu = ISSET(VIMODE) ? MVICMD : MMAIN;
     total_refresh();
 
     /* Jump back to either main() or the unjustify routine in
@@ -1418,16 +1418,14 @@ void do_toggle_void(void)
 
 void do_vi_cmd(void)
 {
-    if (ISSET(VIMODE)) {
-        currmenu = MVIMODE;
-        do_left();
-        // TODO - left move won't show up?
-    }
+    currmenu = MVICMD;
+    do_left();
+    // TODO - left move won't show up?
 }
 
 void do_vi_i(void)
 {
-    currmenu = MMAIN;
+    currmenu = MVIINS;
 }
 
 /* Disable extended input and output processing in our terminal
@@ -1577,7 +1575,7 @@ int do_input(bool *meta_key, bool *func_key, bool *s_or_t, bool
 #endif
 
     /* Check for a shortcut in the main list. */
-    s = get_shortcut(currmenu == MVIMODE ? MVIMODE : MMAIN,
+    s = get_shortcut(currmenu | MVIMODE ? currmenu : MMAIN,
                      &input, meta_key, func_key);
 
     /* If we got a shortcut from the main list, or a "universal"
@@ -1587,7 +1585,7 @@ int do_input(bool *meta_key, bool *func_key, bool *s_or_t, bool
     /* If we got a non-high-bit control key, a meta key sequence, or a
      * function key, and it's not a shortcut or toggle, throw it out. */
     if (!have_shortcut) {
-	if (currmenu == MVIMODE || is_ascii_cntrl_char(input) || *meta_key || *func_key) {
+	if (currmenu == MVICMD || is_ascii_cntrl_char(input) || *meta_key || *func_key) {
 	    statusbar(_("Unknown Command"));
 	    beep();
 	    *meta_key = FALSE;
@@ -2755,8 +2753,8 @@ int main(int argc, char **argv)
 	if (ISSET(CONST_UPDATE) && get_key_buffer_len() == 0)
 	    do_cursorpos(TRUE);
 
-        if (currmenu != MMAIN && currmenu != VIMODE) {
-            currmenu = ISSET(VIMODE) ? MVIMODE : MMAIN;
+        if (!(currmenu | MEDITING)) {
+            currmenu = ISSET(VIMODE) ? MVICMD : MMAIN;
         }
 
 	/* Read in and interpret characters. */

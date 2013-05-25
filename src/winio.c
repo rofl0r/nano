@@ -345,7 +345,7 @@ int parse_kbinput(WINDOW *win, bool *meta_key, bool *func_key)
 	case ERR:
 	    break;
 	case NANO_CONTROL_3:
-        if (ISSET(VIMODE) && currmenu == MMAIN) {
+        if (ISSET(VIMODE) && currmenu == MVIINS) {
 		    retval = *kbinput;
 		    break;
         }

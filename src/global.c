@@ -1078,7 +1078,7 @@ void shortcut_init(bool unjustify)
 	goto_dir_msg, IFSCHELP(nano_gotodir_msg), FALSE, VIEW);
 #endif
 
-    currmenu = ISSET(VIMODE) ? MVIMODE : MMAIN;
+    currmenu = ISSET(VIMODE) ? MVICMD : MMAIN;
 
     add_to_sclist(MMAIN|MWHEREIS|MREPLACE|MREPLACE2|MGOTOLINE|MWRITEFILE|MINSERTFILE|MEXTCMD|MSPELL|MBROWSER|MWHEREISFILE|MGOTODIR,
 	"^G", do_help_void, 0, TRUE);
@@ -1261,35 +1261,35 @@ void shortcut_init(bool unjustify)
     add_to_sclist(MALL, "^H", do_backspace, 0, TRUE);
     add_to_sclist(MALL, "kbsp", do_backspace, 0, TRUE);
 
-    add_to_sclist(MVIMODE, "l", do_right, 0, TRUE);
-    add_to_sclist(MVIMODE, "h", do_left, 0, TRUE);
-    add_to_sclist(MVIMODE, "w", do_next_word_void, 0, TRUE);
-    add_to_sclist(MVIMODE, "b", do_prev_word_void, 0, TRUE);
-    add_to_sclist(MVIMODE, "k", do_up_void, 0, TRUE);
-    add_to_sclist(MVIMODE, "j", do_down_void, 0, TRUE);
-    add_to_sclist(MVIMODE, "i", do_vi_i, 0, TRUE);
-    add_to_sclist(MVIMODE, "a", do_vi_a, 0, TRUE);
-    add_to_sclist(MVIMODE, "o", do_vi_o, 0, TRUE);
-    add_to_sclist(MVIMODE, "O", do_vi_O, 0, TRUE);
-    add_to_sclist(MVIMODE, ">", do_indent_void, 0, TRUE);
-    add_to_sclist(MVIMODE, "<", do_unindent, 0, TRUE);
-    add_to_sclist(MVIMODE, "/", do_search, 0, TRUE);
-    add_to_sclist(MVIMODE, "v", do_mark, 0, TRUE);
-    add_to_sclist(MVIMODE, "Z", do_exit, 0, TRUE);
-    add_to_sclist(MVIMODE, "d", do_cut_text_void, 0, TRUE);
-    add_to_sclist(MVIMODE, "p", do_uncut_text, 0, TRUE);
-    add_to_sclist(MVIMODE, "y", do_copy_text, 0, TRUE);
-    add_to_sclist(MVIMODE, "0", do_home, 0, TRUE);
-    add_to_sclist(MVIMODE, "$", do_end, 0, TRUE);
-    add_to_sclist(MVIMODE, "%", do_find_bracket, 0, TRUE);
-    add_to_sclist(MVIMODE, "^F", do_page_down, 0, TRUE);
-    add_to_sclist(MVIMODE, "^B", do_page_up, 0, TRUE);
-    add_to_sclist(MVIMODE, "?", do_replace, 0, TRUE);
-    add_to_sclist(MVIMODE, "u", do_undo, 0, TRUE);
-    add_to_sclist(MVIMODE, "^R", do_redo, 0, TRUE);
-    add_to_sclist(MVIMODE, "x", do_delete, 0, TRUE);
+    add_to_sclist(MVICMD, "l", do_right, 0, TRUE);
+    add_to_sclist(MVICMD, "h", do_left, 0, TRUE);
+    add_to_sclist(MVICMD, "w", do_next_word_void, 0, TRUE);
+    add_to_sclist(MVICMD, "b", do_prev_word_void, 0, TRUE);
+    add_to_sclist(MVICMD, "k", do_up_void, 0, TRUE);
+    add_to_sclist(MVICMD, "j", do_down_void, 0, TRUE);
+    add_to_sclist(MVICMD, "i", do_vi_i, 0, TRUE);
+    add_to_sclist(MVICMD, "a", do_vi_a, 0, TRUE);
+    add_to_sclist(MVICMD, "o", do_vi_o, 0, TRUE);
+    add_to_sclist(MVICMD, "O", do_vi_O, 0, TRUE);
+    add_to_sclist(MVICMD, ">", do_indent_void, 0, TRUE);
+    add_to_sclist(MVICMD, "<", do_unindent, 0, TRUE);
+    add_to_sclist(MVICMD, "/", do_search, 0, TRUE);
+    add_to_sclist(MVICMD, "v", do_mark, 0, TRUE);
+    add_to_sclist(MVICMD, "Z", do_exit, 0, TRUE);
+    add_to_sclist(MVICMD, "d", do_cut_text_void, 0, TRUE);
+    add_to_sclist(MVICMD, "p", do_uncut_text, 0, TRUE);
+    add_to_sclist(MVICMD, "y", do_copy_text, 0, TRUE);
+    add_to_sclist(MVICMD, "0", do_home, 0, TRUE);
+    add_to_sclist(MVICMD, "$", do_end, 0, TRUE);
+    add_to_sclist(MVICMD, "%", do_find_bracket, 0, TRUE);
+    add_to_sclist(MVICMD, "^F", do_page_down, 0, TRUE);
+    add_to_sclist(MVICMD, "^B", do_page_up, 0, TRUE);
+    add_to_sclist(MVICMD, "?", do_replace, 0, TRUE);
+    add_to_sclist(MVICMD, "u", do_undo, 0, TRUE);
+    add_to_sclist(MVICMD, "^R", do_redo, 0, TRUE);
+    add_to_sclist(MVICMD, "x", do_delete, 0, TRUE);
 
-    add_to_sclist(MMAIN, "\033", do_vi_cmd, 0, TRUE);
+    add_to_sclist(MVIINS, "\033", do_vi_cmd, 0, TRUE);
 
 #ifdef DEBUG
     print_sclist();

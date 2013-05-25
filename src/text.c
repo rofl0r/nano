@@ -2981,7 +2981,7 @@ void do_spell(void)
     unlink(temp);
     free(temp);
 
-    currmenu = ISSET(VIMODE) ? MVIMODE : MMAIN;
+    currmenu = ISSET(VIMODE) ? MVICMD : MMAIN;
 
     /* If the spell-checker printed any error messages onscreen, make
      * sure that they're cleared off. */
