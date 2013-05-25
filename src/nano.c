@@ -2485,6 +2485,10 @@ int main(int argc, char **argv)
 	UNSET(NO_WRAP);
 #endif
 
+    /* Overwrite any vimode disabling if we're running a 'v*' */
+    if (*(tail(argv[0])) == 'v') {
+        SET(VIMODE);
+    }
     /* If we're using bold text instead of reverse video text, set it up
      * now. */
     if (ISSET(BOLD_TEXT))
