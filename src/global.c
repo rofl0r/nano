@@ -1288,6 +1288,11 @@ void shortcut_init(bool unjustify)
     add_to_sclist(MVICMD, "u", do_undo, 0, TRUE);
     add_to_sclist(MVICMD, "^R", do_redo, 0, TRUE);
     add_to_sclist(MVICMD, "x", do_delete, 0, TRUE);
+    add_to_sclist(MVICMD, "M-<", switch_to_prev_buffer_void, 0, TRUE);
+    add_to_sclist(MVICMD, "M-,", switch_to_prev_buffer_void, 0, TRUE);
+    add_to_sclist(MVICMD, "M->", switch_to_next_buffer_void, 0, TRUE);
+    add_to_sclist(MVICMD, "M-.", switch_to_next_buffer_void, 0, TRUE);
+    add_to_sclist(MVICMD, "e", do_insertfile_void, 0, TRUE);
 
     add_to_sclist(MVIINS, "\033", do_vi_cmd, 0, TRUE);
 
